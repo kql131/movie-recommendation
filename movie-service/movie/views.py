@@ -60,10 +60,14 @@ class SaveMovieView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = self.request.user
-        movie = Movie.objects.get(pk=kwargs['movie_pk'])
-        list = List.objects.get(user=user.pk)
-        list.movies.add(movie)
-        if list.save():
-            return Response({"status":"success"}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({"status":"failed"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            movie = Movie.objects.get(pk=kwargs['movie_pk'])
+            list = List.objects.get(user=user.pk)
+            list.movies.add(movie)
+            list.save()
+        except Movie.DoesNotExist:
+            return Response(data="Movie not found.", status=status.HTTP_400_BAD_REQUEST)
+        except List.DoesNotExist:
+            return Response(data="List not found.", status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"status":"success"}, status=status.HTTP_201_CREATED)
