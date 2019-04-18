@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movie, List
+from .models import Movie, List, Tag, Rating
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
@@ -30,3 +30,13 @@ class ListSerializer(serializers.ModelSerializer):
     class Meta:
         model = List
         fields = ('name', 'user', 'movies')
+
+class RateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = ('rate', 'movie', 'user')
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ('name', 'movie')

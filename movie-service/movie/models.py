@@ -18,3 +18,11 @@ class List(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     movies = models.ManyToManyField(Movie, blank=True)
 
+class Tag(models.Model):
+    movie=models.ManyToManyField(Movie, blank=True)
+    name = models.CharField(max_length=255, null=False)
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    movie = models.ForeignKey(Movie, on_delete=models.DO_NOTHING)
+    rate = models.IntegerField()

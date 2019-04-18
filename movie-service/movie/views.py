@@ -71,3 +71,13 @@ class SaveMovieView(APIView):
             return Response(data="List not found.", status=status.HTTP_400_BAD_REQUEST)
 
         return Response({"status":"success"}, status=status.HTTP_201_CREATED)
+
+class RateMovieView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        try:
+            movie = Movie.objects.get(pk=kwargs['movie_pk'])
+            rate = kwargs['rate']
+            data = {}
+
