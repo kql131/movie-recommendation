@@ -1,7 +1,7 @@
 from rest_framework.test import APITestCase, APIRequestFactory, APIClient
 from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
-from . models import Movie, List
+from . models import Movie, List, Rating, Tag
 
 
 def setup_user():
@@ -112,4 +112,43 @@ class TestList(APITestCase):
         self.assertEqual(
             response.status_code, 201,
             "Expected Response Code 201, got {status_code} instead. Data: {data}".format(data=response.data,status_code=response.status_code)
+        )
+
+class TestRateMovie(APITestCase):
+    """
+    Another way to test with APIClient.
+    You use it as an client tester. You have to specify the full uri.
+    """
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user = setup_user()
+        self.token = Token.objects.create(user=self.user)
+        self.token.save()
+        List.objects.create(name="list1", user=self.user)
+        Movie.objects.create(title="movie1", director="kevin")
+
+    def test_rate_movie(self):
+        self.client.login(username='test', password='test')
+        uri = '/api/v1/movie/1/rate/5'
+        response = self.client.post(uri)
+        rate = Rating.objects.filter(user=self.user.pk, movie=1)[0]
+        self.assertEqual(
+            response.status_code, 201,
+            "Expected Response Code 201, got {status_code} instead.".format(status_code=response.status_code)
+        )
+        self.assertEqual(
+            rate.rate, 5,
+            "Rating should be 5, but got {rate} instead.".format(rate=rate.rate)
+        )
+        uri = '/api/v1/movie/1/rate/4'
+        response = self.client.post(uri)
+        rate = Rating.objects.filter(user=self.user.pk, movie=1)[0]
+        self.assertEqual(
+            response.status_code, 200,
+            "Expected Response Code 200, got {status_code} instead.".format(status_code=response.status_code)
+        )
+        self.assertEqual(
+            rate.rate, 4,
+            "Rating should be 5, but got {rate} instead.".format(rate=rate.rate)
         )

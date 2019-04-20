@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 import logging
 from rest_framework import generics
 from rest_framework.response import Response
-from .models import Movie, List
-from .serializers import MovieSerializer, UserSerializer, ListSerializer
+from .models import Movie, List, Rating, Tag
+from .serializers import MovieSerializer, UserSerializer, ListSerializer, RateSerializer, TagSerializer
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
@@ -77,7 +77,28 @@ class RateMovieView(APIView):
     def post(self, request, *args, **kwargs):
         user = self.request.user
         try:
-            movie = Movie.objects.get(pk=kwargs['movie_pk'])
             rate = kwargs['rate']
-            data = {}
+            movie = Movie.objects.get(pk=kwargs['movie_pk'])
+            rating = Rating.objects.filter(user=user.pk, movie=movie.pk)
+            data = {'movie': movie.pk, 'rate': rate, 'user': user.pk}
+            serializer = RateSerializer(data=data)
+
+            if len(rating) == 0:
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                    return Response({"error":"Not valid"}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                r = Rating.objects.get(user=user.pk, movie=movie.pk)
+                r.rate = rate
+                r.save()
+
+                return Response(RateSerializer(r).data, status=status.HTTP_200_OK)
+
+
+        except Movie.DoesNotExist:
+            return Response({"error":"Movie not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
