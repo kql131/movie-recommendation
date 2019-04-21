@@ -6,12 +6,12 @@ from rest_framework.authtoken.models import Token
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ("title", "director")
+        fields = ('id', "title", "director")
     
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('id','username', 'email', 'password')
         extra_kwargs = {'password':{'write_only':True}}
 
     def create(self, validated_data):
@@ -29,7 +29,7 @@ class ListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = List
-        fields = ('name', 'user', 'movies')
+        fields = ('id','name', 'user', 'movies')
 
 class RateSerializer(serializers.ModelSerializer):
     class Meta:
