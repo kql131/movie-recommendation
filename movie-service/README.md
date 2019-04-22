@@ -6,13 +6,20 @@ A django project implemented as api only.
 - `/v1/movies/` working
 - `/v1/movie/1` working (but using APIView instead of generic views)
 - TODO: Follow example and rewrite view.py
+
 2019-04-07
 - Got logging working correctly.
 - Added url router, but it doesn't work.
+
 2019-04-09
 - got viewset working
 - got docker-compose working
 
+2019-04-21
+- switched out sqlite to posgress
+- can rate movie
+- can save movie
+- tag?
 #### reference
 *This is a good example to follow*
 

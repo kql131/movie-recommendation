@@ -152,3 +152,31 @@ class TestRateMovie(APITestCase):
             rate.rate, 4,
             "Rating should be 5, but got {rate} instead.".format(rate=rate.rate)
         )
+
+class TestTagMovie(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = setup_user()
+        self.token = Token.objects.create(user=self.user)
+        self.token.save()
+        List.objects.create(name="list1", user=self.user)
+        Movie.objects.create(title="movie1", director="kevin")
+
+    def create_tag(self):
+        self.client.login(username='test', password='test')
+        uri = '/api/v1/tag/'
+        data = {'name':'test_tag'}
+        response = self.client.post(uri, data)
+        self.assertEqual(
+            response.status_code, 201,
+            "Expeted Response Code 201, received {0} instead.".format(response.status_code)
+        )
+
+    def tag_a_movie(self):
+        self.client.login(username='test', password='test')
+        uri = '/api/v1/movie/1/tag/1'
+        response = self.client.post(uri)
+        self.assertEqual(
+            response.status_code, 200,
+            "Expected Response Code 200, recieved {0} instead.".format(response.status_code)
+        )

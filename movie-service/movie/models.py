@@ -20,7 +20,7 @@ class List(models.Model):
 
 class Tag(models.Model):
     movie=models.ManyToManyField(Movie, blank=True)
-    name = models.CharField(max_length=255, null=False)
+    name = models.CharField(max_length=255, null=False, unique=True)
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)

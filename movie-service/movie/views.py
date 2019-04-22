@@ -100,5 +100,26 @@ class RateMovieView(APIView):
         except Movie.DoesNotExist:
             return Response({"error":"Movie not found"}, status=status.HTTP_400_BAD_REQUEST)
 
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+class TagMovieView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        try:
+            tag_id = kwargs['tag_pk']
+            movie_id = kwargs['movie_pk']
+            tag = Tag.objects.get(pk=tag_id)
+            movie = Movie.objects.get(pk=movie_id)
+            tag.movie.add(movie)
+
+            return Response({'success':'added tag'}, status=status.HTTP_200_CREATED)
+        except Movie.DoesNotExist:
+            return Response({'error':'Movie does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+        except Tag.DoesNotExist:
+            return Response({'error':'Tag does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
