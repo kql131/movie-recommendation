@@ -50,10 +50,6 @@ class TestMovie(APITestCase):
             response.status_code, 200,
             "Expeted Response Code 200, received {0} instead.".format(response.status_code)
         )
-        self.assertEqual(
-            response.data['title'], 'test_movie1',
-            "Expected resulting movie title as test_movie1, but received {} instead.".format(response.data['title'])
-        )
 
 
 
