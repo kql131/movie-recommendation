@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 class Movie(models.Model):
     title = models.CharField(max_length=255, null=False)
-    director = models.CharField(max_length=255, null=False)
+    year = models.IntegerField(null=True)
 
     def __str__(self):
         return "{} - {}".format(self.title, self.director)
