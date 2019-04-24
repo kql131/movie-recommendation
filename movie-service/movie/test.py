@@ -21,12 +21,13 @@ class TestMovie(APITestCase):
         self.user = setup_user()
         self.token = Token.objects.create(user=self.user)
         self.token.save()
-        Movie.objects.create(title="test_movie1", director="kevin")
+        self.client.login(username="test", password="test")
+        Movie.objects.create(title="test_movie1", year=1920)
 
     def test_post_single_movie(self):
         self.client.login(username="test", password="test")
         uri = '/api/v1/movie/'
-        params = {'title':'test_movie2', 'director': 'kevin liu'}
+        params = {'title':'test_movie2', 'year': 2001}
         response = self.client.post(uri, params)
         self.assertEqual(
             response.status_code, 201,
@@ -65,7 +66,7 @@ class TestList(APITestCase):
         self.token = Token.objects.create(user=self.user)
         self.token.save()
         List.objects.create(name="test_list", user=self.user)
-        Movie.objects.create(title="movie1", director="kevin")
+        Movie.objects.create(title="movie1", year=2001)
 
 
     def test_list_single_list(self):
@@ -122,7 +123,7 @@ class TestRateMovie(APITestCase):
         self.token = Token.objects.create(user=self.user)
         self.token.save()
         List.objects.create(name="list1", user=self.user)
-        Movie.objects.create(title="movie1", director="kevin")
+        Movie.objects.create(title="movie1", year=2001)
 
     def test_rate_movie(self):
         self.client.login(username='test', password='test')
@@ -156,7 +157,7 @@ class TestTagMovie(APITestCase):
         self.token = Token.objects.create(user=self.user)
         self.token.save()
         List.objects.create(name="list1", user=self.user)
-        Movie.objects.create(title="movie1", director="kevin")
+        Movie.objects.create(title="movie1", year=2001)
 
     def create_tag(self):
         self.client.login(username='test', password='test')

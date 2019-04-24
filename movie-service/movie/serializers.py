@@ -6,7 +6,7 @@ from rest_framework.authtoken.models import Token
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ('id', "title", "director")
+        fields = ('id', "title", "year")
     
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
