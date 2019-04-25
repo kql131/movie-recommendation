@@ -177,3 +177,29 @@ class TestTagMovie(APITestCase):
             response.status_code, 200,
             "Expected Response Code 200, recieved {0} instead.".format(response.status_code)
         )
+
+class TestSearchMovie(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = setup_user()
+        self.token = Token.objects.create(user=self.user)
+        self.token.save()
+        List.objects.create(name="list1", user=self.user)
+        Movie.objects.create(title="movie1", year=2001)
+        Movie.objects.create(title="movie1", year=2025)
+
+    def test_search_single_movie(self):
+        uri = '/api/v1/movie/search/?title=movie1&year=2001'
+        response = self.client.get(uri)
+        self.assertEqual(
+            response.status_code, 200,
+            "Expected response code 200, got {0} instead.".format(response.status_code)
+        )
+        self.assertEqual(
+            "movie1", response.data[0]['title'],
+            "Movie does not match, got {} instead.".format(response.data[0]['title'])
+        )
+        self.assertEqual(
+            2001, response.data[0]['year'],
+            "Movie does not match, got {} instead.".format(response.data[0]['year'])
+        )

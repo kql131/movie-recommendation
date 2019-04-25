@@ -121,5 +121,17 @@ class TagMovieView(APIView):
         except Tag.DoesNotExist:
             return Response({'error':'Tag does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
+class SearchMovieView(generics.ListAPIView):
+    permission_classes = ()
+    serializer_class = MovieSerializer
 
-
+    """
+    Temp implementation of search. Ideally we use elasticsearch later on.
+    """
+    def get_queryset(self):
+        queryset = Movie.objects.all()
+        title = self.request.query_params.get('title', None)
+        year = self.request.query_params.get('year', None)
+        if title is not None and year is not None:
+            queryset = queryset.filter(title=title, year=year)
+        return queryset

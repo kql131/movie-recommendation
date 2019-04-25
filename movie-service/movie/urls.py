@@ -16,7 +16,7 @@ Including another URLconf
 from django.urls import path
 # from .views import ListMoviesView, RetrieveMovieView
 from rest_framework.routers import DefaultRouter
-from .views import MovieViewSet, UserCreateView, LoginView, ListViewSet, SaveMovieView, RateMovieView, TagViewSet, TagMovieView
+from .views import MovieViewSet, UserCreateView, LoginView, ListViewSet, SaveMovieView, RateMovieView, TagViewSet, TagMovieView, SearchMovieView
 
 
 
@@ -32,7 +32,8 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path("movie/<int:movie_pk>/save/", SaveMovieView.as_view(), name="save_movie"),
     path("movie/<int:movie_pk>/rate/<int:rate>", RateMovieView.as_view(), name="rate_movie"),
-    path('movie/<int:movie_pk>/tag/<int:tag_pk>', TagMovieView.as_view(), name="tag_movie")
+    path('movie/<int:movie_pk>/tag/<int:tag_pk>', TagMovieView.as_view(), name="tag_movie"),
+    path('movie/search/', SearchMovieView.as_view(), name="search_movie")
 ]
 
 urlpatterns += router.urls
