@@ -18,14 +18,17 @@ services:
     volumes:
       - ./data/postgres_data:/var/lib/postgresql/data
 
-
-  # elasticsearch:
-  #   image: 'elasticsearch:5'
-  #   restart: always
-  #   volumes:
-  #     - ./es_data:/usr/share/elasticsearch/data
-  #   environment:
-  #     - discovery.type=single-node
-  #     - bootstrap.memory_lock=true
-  #   ports:
-  #     - '9200:9200'
+#
+#  kafka:
+#    image:
+#
+#  elasticsearch:
+#    image: 'elasticsearch:5'
+#    restart: always
+#    volumes:
+#      - ./data/es_data:/usr/share/elasticsearch/data
+#    environment:
+#      - discovery.type=single-node
+#      - bootstrap.memory_lock=true
+#    ports:
+#      - '9200:9200'
