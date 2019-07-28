@@ -20,7 +20,27 @@ A django project implemented as api only.
 - can rate movie
 - can save movie
 - tag?
-#### reference
+- manage command to import movie.csv
+
+#### Instructions
+API testing username: `test1`
+
+API testing password: `test1`
+
+Start Docker Compose
+```bash
+docker-compose up movie-service-db
+```
+Start movie-service
+```bash
+python manage.py runserver
+```
+Run manage command to import movies
+```bash
+./manage.py import_movies_parallel ../data/init-dataset/ml-latest-small/movies.csv -u test1 -p test1
+```
+
+#### Reference
 *This is a good example to follow*
 
 https://github.com/agiliq/building-api-django 
