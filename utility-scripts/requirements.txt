@@ -1,0 +1,2 @@
+confluent-kafka==1.1.0
+kafka-python==1.4.6
